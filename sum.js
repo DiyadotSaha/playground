@@ -1,3 +1,2 @@
-function sum(a, b) { return a * b; }
-// testing out a pr 
+function sum(a, b) { return a + b; }
 module.exports = sum;
