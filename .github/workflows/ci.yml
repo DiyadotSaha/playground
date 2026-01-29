@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # pulls your repo onto the runner
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+        # installs Node and caches node_modules downloads to speed up future runs
+
+      - name: Install deps
+        run: npm ci
+        # clean, reproducible install based on package-lock.json
+
+      - name: Run tests
+        run: npm test
+        # CI gate: if tests fail, job fails and PR shows red
+
+      - name: Build (optional)
+        run: |
+          mkdir -p dist
+          echo "Deployed from commit $GITHUB_SHA" > dist/index.html
+        # creates a “build artifact” to deploy (dist/)
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+        # stores dist/ so other jobs (or later workflows) can use it
