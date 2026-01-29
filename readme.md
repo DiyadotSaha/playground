@@ -1,2 +1,2 @@
 Playing with ci/cd
-Thrisha Kopula
+Thrisha Kopula is in main
